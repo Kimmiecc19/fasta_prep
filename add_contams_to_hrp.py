@@ -37,14 +37,20 @@ with open(crap_file_path, 'r') as file:
     crap_content = file.read()
 print("Reading cRAP FASTA file")
 # Split the cRAP content into individual entries
+#This line splits the crap_content string into individual entries based on the ">" delimiter and stores the result in the crap_entries list.
 crap_entries = crap_content.split(">")
 
+#This block iterates through each entry in the crap_entries list. 
+#It first checks if the entry is empty or contains only whitespace. 
+#If yes, it skips that entry and moves to the next one.
 # Process and append cRAP contaminants
 for entry in crap_entries:
     # Skip empty entries
     if not entry.strip():
         continue
-
+#For non-empty entries, it splits the entry into a header and sequence using the first occurrence of the newline character (\n). 
+#The sequence is then modified to remove any newline characters. 
+#The header and modified sequence are concatenated with the existing fasta_content variable.
     # Split the entry into header and sequence
     header, sequence = entry.split("\n", 1)
     sequence = sequence.replace("\n", "")
@@ -64,9 +70,3 @@ if __name__ == '__main__':
     fasta_file = ''  # Assign the path to the input FASTA file
     output_file = ''  # Assign the path to the output FASTA file
 
-    # Check if contam_file exists
-    if len(sys.argv) == 4:
-        if os.path.exists(sys.argv[1]):
-            contam_file = sys.argv[1]
-        else:
-            print("Contaminants file not found.")
