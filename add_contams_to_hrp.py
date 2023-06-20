@@ -1,17 +1,8 @@
-#############################
-'''
-This is a script to add contaminants from cRAP to a Human Reference Proteome from UniProt
-This script works with two additional scripts: get_fasta.py and get_cRAP.py. 
-''''
-#############################
 #Import the necessary modules
 import os
 import sys
 import logging
 import subprocess
-
-mkdir contams
-cd /home/kcoetzer/contams
 
 # Run get_fasta.py script
 subprocess.run(['python', 'get_fasta.py'])
@@ -34,17 +25,17 @@ logging.debug('Try again.')
 logging.error('Something went wrong.')
 
 # Open the input FASTA file
-fasta_file_path = fasta_file
+fasta_file_path = "HRP.fasta"
 with open(fasta_file_path, 'r') as file:
-    # Read the existing content of the FASTA file
+# Read the existing content of the FASTA file
     fasta_content = file.read()
-
+print("Opening input FASTA file")
 # Read the cRAP contaminants
-crap_file_path = contam_file
+crap_file_path = "crap.fasta"
 with open(crap_file_path, 'r') as file:
     # Read the cRAP FASTA content
     crap_content = file.read()
-
+print("Reading cRAP FASTA file")
 # Split the cRAP content into individual entries
 crap_entries = crap_content.split(">")
 
@@ -62,29 +53,20 @@ for entry in crap_entries:
     fasta_content += f">{header}\n{sequence}\n"
 
 # Write the updated content to a new FASTA file
-output_file_path = output_file
+output_file_path = "hrp_and_contams.fasta"
 with open(output_file_path, 'w') as file:
     file.write(fasta_content)
+print("New FASTA file with contaminants made")
 
-#This block of code checks if the script is being executed as the main module. 
-#It initializes the variables extra_file, fasta_file, and output_file to empty strings. 
-#It handles command-line argument parsing (not shown in the code) and prompts the user for input to set the values of these variables. 
-#Finally, it calls the fasta_add_extras function with the provided arguments.
+#This block of code checks if the script is being executed as the main module.
 if __name__ == '__main__':
     contam_file = ''  # Assign the path to the contaminants file
     fasta_file = ''  # Assign the path to the input FASTA file
     output_file = ''  # Assign the path to the output FASTA file
 
-    # Check if database names were passed as command-line arguments
+    # Check if contam_file exists
     if len(sys.argv) == 4:
         if os.path.exists(sys.argv[1]):
             contam_file = sys.argv[1]
         else:
             print("Contaminants file not found.")
-
-
-#####
-'''
-END
-''''
-#####
