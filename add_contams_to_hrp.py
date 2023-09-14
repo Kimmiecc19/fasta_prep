@@ -1,3 +1,4 @@
+# This is a python script to add common contaminants from the cRAP database to the Human Reference Proteome from UniProt. This is an example of a protein database that can be used as input for all proteomics search engines. The output file is in FASTA format.
 # Load modules that will be used
 import os
 import requests
